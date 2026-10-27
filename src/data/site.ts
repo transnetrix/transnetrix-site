@@ -17,7 +17,7 @@ export const site = {
 
   // Web3Forms access key. Get one free at https://web3forms.com using transnetrix@gmail.com,
   // then paste it here. Until then the form shows an email fallback.
-  web3formsKey: 'YOUR_WEB3FORMS_ACCESS_KEY',
+  web3formsKey: '749643b3-e880-417e-9df2-46224e87373d',
 
   // Confirm these before launch.
   social: [
