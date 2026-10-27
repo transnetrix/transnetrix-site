@@ -1,0 +1,36 @@
+---
+import { site } from '../data/site';
+import Arrow from './Arrow.astro';
+interface Props { title?: string; text?: string }
+const {
+  title = 'Have a programme to design, evidence or deliver?',
+  text = 'Tell us the question. We will come back with a team, a method and one accountable lead.',
+} = Astro.props;
+---
+<section class="band section-gap" aria-labelledby="band-title">
+  <div class="stripe thick" aria-hidden="true">
+    <span style="background:var(--marcom)"></span><span style="background:var(--edtech)"></span><span style="background:var(--fintech)"></span><span style="background:var(--it)"></span>
+  </div>
+  <div class="wrap" aria-hidden="true" style="padding-top:clamp(32px,4vw,48px)">
+    <div class="line"><div class="travel"></div></div>
+  </div>
+  <div class="wrap inner">
+    <div class="copy">
+      <p class="label">Get in touch</p>
+      <h2 id="band-title" class="h2">{title}</h2>
+      <p>{text}</p>
+      <div class="btn-row" style="padding-top:8px">
+        <a class="btn btn-primary" href="/contact/">Start a conversation<Arrow /></a>
+        <a class="btn btn-light" href={`mailto:${site.email}`}>{site.email}</a>
+      </div>
+    </div>
+    <div class="contacts">
+      <div><span class="label-sm">Office</span><span>{site.office}</span></div>
+      <div><span class="label-sm">Locations</span><span>{site.locations}</span></div>
+      <div><span class="label-sm">Phone</span><span style="display:flex;flex-direction:column">{site.phones.map((p) => <a href={`tel:${p.replace(/\s/g, '')}`} style="text-decoration:none">{p}</a>)}</span></div>
+    </div>
+  </div>
+</section>
+<style>
+  .section-gap { margin-top: var(--section); }
+</style>

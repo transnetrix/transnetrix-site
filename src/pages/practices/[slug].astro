@@ -1,0 +1,90 @@
+---
+import Base from '../../layouts/Base.astro';
+import Arrow from '../../components/Arrow.astro';
+import PracticeIcon from '../../components/PracticeIcon.astro';
+import ContactBand from '../../components/ContactBand.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const all = (await getCollection('practices')).sort((a, b) => a.data.order - b.data.order);
+  return all.map((p, i) => ({ params: { slug: p.id }, props: { entry: p, next: all[(i + 1) % all.length] } }));
+}
+const { entry, next } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+const work = (await getCollection('work')).filter((w) => d.related.includes(w.id));
+---
+<Base title={d.title} description={d.intro}>
+  <div class={`t-${d.key}`}>
+    <section class="wrap page-hero">
+      <div class="copy">
+        <p class="crumbs"><a href="/">Home</a> / <a href="/practices/">Practices</a> / {d.title}</p>
+        <div style="display:flex;align-items:center;gap:16px" class="in">
+          <span class="fill-c" style="width:56px;height:56px;display:inline-flex;align-items:center;justify-content:center"><PracticeIcon k={d.key} /></span>
+          <span class="label text-c">{d.short}</span>
+        </div>
+        <h1 class="display in d1">{d.headline}</h1>
+        <p class="lead in d2">{d.intro}</p>
+        <div class="btn-row in d3"><a class="btn btn-primary" href="/contact/">Discuss an assignment<Arrow /></a></div>
+      </div>
+      <div class="art in d2"><img src={d.image} alt={d.imageAlt} loading="eager" /></div>
+    </section>
+
+    <section class="wrap" style="padding-top:24px">
+      <div class="section-head">
+        <div>
+          <p class="label"><span class="num">01</span>What we do</p>
+          <h2 class="h2">Services</h2>
+        </div>
+      </div>
+      <div class="services">
+        {d.services.map((s, i) => (
+          <div class="service reveal"><span class="n">{String(i + 1).padStart(2, '0')}</span><h3>{s.title}</h3><p>{s.text}</p></div>
+        ))}
+      </div>
+      <p class="callout reveal" style="margin-top:32px"><span>{d.callout}</span></p>
+    </section>
+
+    <section class="wrap section">
+      <div class="section-head">
+        <div>
+          <p class="label"><span class="num">02</span>How it runs</p>
+          <h2 class="h2">{d.highlightsTitle}</h2>
+        </div>
+      </div>
+      <div class="cycle reveal">
+        {d.highlights.map((h) => <div><span class="dot">{h.charAt(0)}</span>{h}</div>)}
+      </div>
+      <div class="prose" style="margin-top:40px"><Content /></div>
+    </section>
+
+    {work.length > 0 && (
+      <section class="wrap section">
+        <div class="section-head">
+          <div>
+            <p class="label"><span class="num">03</span>Related engagement</p>
+            <h2 class="h2">From the record.</h2>
+          </div>
+        </div>
+        <div class="ecards">
+          {work.map((w) => (
+            <a class={`ecard tinted reveal t-${w.data.key}`} href={`/work/${w.id}/`} style="text-decoration:none;color:var(--ink)">
+              <span class="label-sm" style="color:var(--grey-on-tint)">{w.data.client}</span>
+              <h3 class="h3">{w.data.title}</h3>
+              <p style="color:var(--ink-2)">{w.data.summary}</p>
+              <span class="link-arrow text-c">Read the case study<Arrow size={14} /></span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="wrap section">
+      <a class={`pcard tinted t-${next.data.key}`} href={`/practices/${next.id}/`} style="flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:wrap">
+        <span><span class="label-sm">Next practice</span><br /><span class="h3">{next.data.title}</span></span>
+        <span class="link-arrow text-c">Explore {next.data.title}<Arrow size={14} /></span>
+      </a>
+    </section>
+  </div>
+  <ContactBand />
+</Base>

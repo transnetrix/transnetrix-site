@@ -1,0 +1,123 @@
+---
+import Base from '../layouts/Base.astro';
+import Arrow from '../components/Arrow.astro';
+import ContactBand from '../components/ContactBand.astro';
+import { site } from '../data/site';
+import { values, partners, expertise } from '../data/company';
+const groups = ['marcom', 'edtech', 'fintech', 'it'];
+---
+<Base title="About" description="Transnetrix (SMC-Private) Limited is a Gilgit based consultancy and solutions firm. Mission, values, leadership, partners and registrations.">
+  <section class="wrap page-hero">
+    <div class="copy">
+      <p class="crumbs"><a href="/">Home</a> / About</p>
+      <h1 class="display in">Most programmes are designed in one place and lived in another.</h1>
+      <p class="lead in d1">Transnetrix (SMC-Private) Limited is a Gilgit based consultancy and solutions firm. We help public institutions, development partners and businesses design, evidence and communicate change, then deliver it through accountable technology and field partners.</p>
+      <p class="in d2" style="color:var(--ink-2)">Rooted in Gilgit Baltistan. Working across Pakistan. One accountable lead.</p>
+    </div>
+    <div class="art in d2"><img src="/images/mountains.jpg" alt="Pencil sketch of mountain ranges with red signal lines rising from the peaks" /></div>
+  </section>
+
+  <section class="wrap">
+    <div class="split">
+      <div class="main t-marcom tinted reveal" style="border-top:4px solid var(--c);padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;gap:12px">
+        <p class="label text-c">Mission</p>
+        <p class="statement">To connect policy, data, communication and technology into programmes that work where they land.</p>
+        <p style="color:var(--grey-on-tint)">We translate institutional goals into evidence based designs, communicate them to the people who must act on them, and deliver through partners we hold to account.</p>
+      </div>
+      <div class="side t-fintech tinted reveal" style="border-top:4px solid var(--c);padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;gap:12px">
+        <p class="label text-c">Vision</p>
+        <p class="statement" style="font-size:22px">Institutions in Pakistan's hardest to reach regions that plan with evidence and deliver with confidence.</p>
+        <p style="color:var(--grey-on-tint)">Local presence in Gilgit Baltistan combined with donor fluency, analytical depth and technology partnerships.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <div class="section-head">
+      <div>
+        <p class="label"><span class="num">01</span>Core values</p>
+        <h2 class="h2">Six commitments that shape how we scope, staff, deliver and report.</h2>
+      </div>
+    </div>
+    <div class="values">
+      {values.map((v, i) => <div class={`reveal t-${groups[i % 4]}`}><p class="t">{v.title}</p><p>{v.text}</p></div>)}
+    </div>
+  </section>
+
+  <section id="leadership" class="wrap section">
+    <div class="section-head">
+      <div>
+        <p class="label"><span class="num">02</span>Leadership</p>
+        <h2 class="h2">Founder and associates.</h2>
+      </div>
+    </div>
+    <div class="founder">
+      <div class="portrait"><img src="/images/founder.jpg" alt="Abid Majeed Khawar, Founder and Chief Executive of Transnetrix" width="600" height="750" loading="lazy" /></div>
+      <div style="flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:14px">
+        <span class="label-sm" style="color:var(--red-text)">Founder</span>
+        <h3 style="font-size:32px;font-weight:800;letter-spacing:-0.03em;line-height:1.1">Abid Majeed Khawar</h3>
+        <p style="font-weight:700">Chief Executive</p>
+        <p class="small muted">MS Business Analytics · M.Sc. Anthropology · B.A. Economics</p>
+        <p style="color:var(--ink-2);line-height:1.65">Nearly two decades of experience in communication for development, programme delivery and institutional analytics with Save the Children, USAID funded programmes, the EU, KfW, IFAD and AKDN.</p>
+        <p class="muted">He leads strategy, client relationships and quality, and serves as Head of Business Development at AIDCO (Private) Limited.</p>
+        <p class="note"><strong>Associates.</strong> A multi sectoral bench drawn from public, private, corporate and humanitarian practice: engineers, economists, health and education specialists, data scientists, communicators and field teams, engaged by assignment to Transnetrix standards.</p>
+      </div>
+      <div style="flex:1 1 300px;min-width:0">
+        <p class="label-sm" style="padding-bottom:12px">Expertise</p>
+        <div class="values" style="flex-direction:column">
+          {expertise.map((e, i) => <div class={`t-${groups[i % 4]}`} style="flex:none;padding:14px 0"><p class="t" style="font-size:15px">{e.title}</p><p>{e.text}</p></div>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="partners" class="wrap section">
+    <div class="section-head">
+      <div>
+        <p class="label"><span class="num">03</span>Technology partners</p>
+        <h2 class="h2">Two established firms, each under its own name and record.</h2>
+      </div>
+      <p class="small">Each partner's projects and references are its own. They are named here so evaluators know who joins a Transnetrix bid, and in what role.</p>
+    </div>
+    <div class="ecards">
+      {partners.map((p) => (
+        <div class={`ecard tinted reveal t-${p.key}`}>
+          <span class="label-sm text-c">{p.label}</span>
+          <h3 class="h3">{p.name}</h3>
+          <p style="color:var(--ink-2)">{p.text}</p>
+          <div><p class="label-sm" style="margin-bottom:6px">What it brings</p><ul class="ticks">{p.brings.map((b) => <li>{b}</li>)}</ul></div>
+          <div><p class="label-sm" style="margin-bottom:6px">Working together</p><p class="small" style="color:var(--grey-on-tint)">{p.together}</p></div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section id="registrations" class="wrap section">
+    <div class="section-head">
+      <div>
+        <p class="label"><span class="num">04</span>Corporate information</p>
+        <h2 class="h2">Registered and verifiable.</h2>
+      </div>
+      <p class="small">All certificates are computer generated and can be verified online. Full copies are provided with each submission.</p>
+    </div>
+    <div class="split">
+      <div class="main kv reveal">
+        <div><span>Legal name</span><span>{site.legalName}</span></div>
+        <div><span>Company type</span><span>Single member private company, limited by shares</span></div>
+        <div><span>Incorporated</span><span>{site.incorporated}, under section 16 of the Companies Act, 2017</span></div>
+        <div><span>SECP CUIN</span><span>{site.secp}</span></div>
+        <div><span>FBR NTN</span><span>{site.ntn}</span></div>
+        <div><span>Registered office</span><span>{site.office}</span></div>
+        <div><span>Practices</span><span>Marcom · EdTech · FinTech · IT Solutions</span></div>
+      </div>
+      <div class="side" style="display:flex;flex-direction:column;gap:14px">
+        <p class="label-sm">Verify</p>
+        <p class="small">SECP: <a href="https://leap.secp.gov.pk" rel="noopener" target="_blank">leap.secp.gov.pk</a>, CUIN {site.secp}</p>
+        <p class="small">FBR: <a href="https://iris.fbr.gov.pk" rel="noopener" target="_blank">iris.fbr.gov.pk</a>, NTN {site.ntn}</p>
+        <a class="btn btn-outline" href="/docs/Transnetrix_Company_Profile.pdf" style="align-self:flex-start;margin-top:8px">Company profile (PDF)<Arrow dir="down" /></a>
+      </div>
+    </div>
+  </section>
+
+  <ContactBand />
+</Base>

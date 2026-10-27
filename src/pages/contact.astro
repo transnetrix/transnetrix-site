@@ -1,0 +1,90 @@
+---
+import Base from '../layouts/Base.astro';
+import Arrow from '../components/Arrow.astro';
+import { site } from '../data/site';
+const keyReady = site.web3formsKey && !site.web3formsKey.startsWith('YOUR_');
+---
+<Base title="Contact" description="Talk to Transnetrix about a programme to design, evidence or deliver. Office in Jutial, Gilgit, with an Islamabad presence.">
+  <section class="wrap page-hero">
+    <div class="copy">
+      <p class="crumbs"><a href="/">Home</a> / Contact</p>
+      <h1 class="display in">Tell us the question.</h1>
+      <p class="lead in d1">We will come back with a team, a method and one accountable lead, usually within two working days.</p>
+    </div>
+  </section>
+
+  <section class="wrap section-last">
+    <div class="split">
+      <div class="main">
+        <form class="form t-marcom" action="https://api.web3forms.com/submit" method="POST" data-form data-ready={keyReady ? 'true' : 'false'}>
+          <input type="hidden" name="access_key" value={site.web3formsKey} />
+          <input type="hidden" name="subject" value="New enquiry from transnetrix.com.pk" />
+          <input type="hidden" name="from_name" value="Transnetrix website" />
+          <input type="hidden" name="redirect" value={`${site.url}/thanks/`} />
+          <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <div class="row">
+            <label>Full name<input name="name" type="text" autocomplete="name" required /></label>
+            <label>Organisation<input name="organisation" type="text" autocomplete="organization" /></label>
+          </div>
+          <div class="row">
+            <label>Email<input name="email" type="email" autocomplete="email" required /></label>
+            <label>Phone (optional)<input name="phone" type="tel" autocomplete="tel" /></label>
+          </div>
+          <label>Practice
+            <select name="practice">
+              <option>Not sure yet</option>
+              <option>Marcom</option>
+              <option>EdTech</option>
+              <option>FinTech</option>
+              <option>IT Solutions</option>
+              <option>Policy, research or programme management</option>
+              <option>Bid partnership or consortium</option>
+            </select>
+          </label>
+          <label>What do you need?<textarea name="message" required placeholder="The programme, the question, timelines and anything we should know."></textarea></label>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:20px">
+            <button class="btn btn-primary" type="submit">Send enquiry<Arrow /></button>
+            <p class="form-status" role="status" aria-live="polite" data-status></p>
+          </div>
+          {!keyReady && <p class="xsmall muted">The form is being connected. Until then, email <a href={`mailto:${site.email}`}>{site.email}</a>.</p>}
+        </form>
+      </div>
+      <aside class="side">
+        <div class="kv">
+          <div style="flex-direction:column;gap:4px"><span class="label-sm">Email</span><a href={`mailto:${site.email}`} style="font-weight:700">{site.email}</a></div>
+          <div style="flex-direction:column;gap:4px"><span class="label-sm">Phone</span>{site.phones.map((p) => <a href={`tel:${p.replace(/\s/g, '')}`} style="font-weight:700">{p}</a>)}</div>
+          <div style="flex-direction:column;gap:4px"><span class="label-sm">Office</span><span style="text-align:left">{site.office}</span></div>
+          <div style="flex-direction:column;gap:4px"><span class="label-sm">Locations</span><span style="text-align:left">{site.locations}</span></div>
+        </div>
+        <a class="btn btn-outline" style="margin-top:24px" href="https://www.google.com/maps/search/?api=1&query=Hakeem+Market+Jutial+Gilgit" rel="noopener" target="_blank">Open in Google Maps<Arrow /></a>
+        <div class="callout t-edtech" style="margin-top:24px"><span class="small">Bidding on a donor programme? Ask for our capability statement and registration certificates, or <a href="/docs/Transnetrix_Company_Profile.pdf">download the company profile</a>.</span></div>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-form]');
+  const status = document.querySelector<HTMLElement>('[data-status]');
+  form?.addEventListener('submit', async (e) => {
+    if (form.dataset.ready !== 'true') {
+      e.preventDefault();
+      if (status) { status.textContent = 'The form is not connected yet. Please email info@transnetrix.com.pk.'; status.className = 'form-status err'; }
+      return;
+    }
+    e.preventDefault();
+    const btn = form.querySelector<HTMLButtonElement>('button[type=submit]');
+    if (btn) btn.disabled = true;
+    if (status) { status.textContent = 'Sending...'; status.className = 'form-status'; }
+    try {
+      const res = await fetch(form.action, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) });
+      const json = await res.json();
+      if (json.success) {
+        form.reset();
+        if (status) { status.textContent = 'Thank you. Your enquiry has reached us.'; status.className = 'form-status ok'; }
+      } else { throw new Error(json.message); }
+    } catch {
+      if (status) { status.textContent = 'Something went wrong. Please email info@transnetrix.com.pk.'; status.className = 'form-status err'; }
+    } finally { if (btn) btn.disabled = false; }
+  });
+</script>

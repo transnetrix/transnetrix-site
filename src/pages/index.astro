@@ -1,0 +1,230 @@
+---
+import Base from '../layouts/Base.astro';
+import Arrow from '../components/Arrow.astro';
+import PracticeIcon from '../components/PracticeIcon.astro';
+import ContactBand from '../components/ContactBand.astro';
+import { getCollection } from 'astro:content';
+import { site } from '../data/site';
+import { advisory, values, partners, clientsA, clientsB } from '../data/company';
+
+const practices = (await getCollection('practices')).sort((a, b) => a.data.order - b.data.order);
+const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+const theme = (k: string) => `t-${k}`;
+const bars = [26, 34, 22, 44, 30, 62, 38, 48, 36, 52, 30, 58, 44, 74, 50, 40, 66, 54, 46, 60, 50, 92, 64, 56, 48, 70, 58, 44, 62, 84, 52, 40];
+const groups = ['marcom', 'edtech', 'fintech', 'it'];
+const cycle = ['var(--marcom)', 'var(--edtech)', 'var(--fintech)', 'var(--it)'];
+const dbl = (a: string[]) => a.concat(a).map((t, i) => ({ t, hid: i >= a.length, c: cycle[i % 4] }));
+const fmt = (v: number, d: number) => v.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+---
+<Base>
+  <section class="wrap hero" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <p class="label in">Consultancy and solutions · Gilgit Baltistan</p>
+      <h1 id="hero-title" class="display in d1">Programmes are designed in one place and lived in another. We work in that gap.</h1>
+      <div class="words in d2" aria-hidden="true" data-words>
+        <span>DESIGN</span><span>EVIDENCE</span><span>COMMUNICATE</span><span>DELIVER</span>
+      </div>
+      <p class="lead in d2">Transnetrix helps public institutions, development partners and businesses design, evidence and communicate change, then deliver it through accountable technology and field partners.</p>
+      <div class="btn-row in d3" style="padding-top:8px">
+        <a class="btn btn-primary" href="/contact/">Start a conversation<Arrow /></a>
+        <a class="btn btn-outline" href="#practices">See our practices<Arrow dir="down" /></a>
+      </div>
+    </div>
+    <div class="hero-viz" aria-hidden="true">
+      <div class="chart">
+        <div class="chart-bands">
+          <span style="background:var(--marcom-t2)"></span><span style="background:var(--edtech-t2)"></span><span style="background:var(--fintech-t2)"></span><span style="background:var(--it-t2)"></span>
+        </div>
+        <div class="chart-bars" data-chart>
+          {bars.map((h, i) => (
+            <div class={`cbar ${i === 21 ? 'on' : ''}`} data-h={h} style={`--c:var(--${groups[Math.min(3, Math.floor(i / 8))]});height:${h}%;transition-delay:${i * 30}ms`}><i></i><b></b></div>
+          ))}
+        </div>
+        <div class="travel"></div>
+      </div>
+      <div class="chart-legend">
+        <span><i style="background:var(--marcom)"></i>MARCOM</span>
+        <span><i style="background:var(--edtech)"></i>EDTECH</span>
+        <span><i style="background:var(--fintech)"></i>FINTECH</span>
+        <span><i style="background:var(--it)"></i>IT</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" aria-label="At a glance">
+    <div class="glance reveal">
+      <div class="t-marcom tinted"><span class="label-sm">Based in</span><strong>Gilgit, with an Islamabad presence</strong></div>
+      <div class="t-edtech tinted"><span class="label-sm">Working across</span><strong>Pakistan, for public, donor and private clients</strong></div>
+      <div class="t-fintech tinted"><span class="label-sm">How we engage</span><strong>One accountable lead per assignment</strong></div>
+      <div class="t-it tinted"><span class="label-sm">Registered</span><strong>SECP CUIN {site.secp} · FBR NTN {site.ntn}</strong></div>
+    </div>
+  </section>
+
+  <section id="practices" class="wrap section" aria-labelledby="practices-title">
+    <div class="section-head">
+      <div>
+        <p class="label"><span class="num">01</span>Practices and services</p>
+        <h2 id="practices-title" class="h2">Four practices. One accountable lead.</h2>
+      </div>
+      <p>Engagements can address a single requirement or an integrated institutional programme. Every practice draws on the same advisory core.</p>
+    </div>
+    <div class="cards">
+      {practices.map((p, i) => (
+        <a class={`pcard tinted reveal ${theme(p.data.key)}`} href={`/practices/${p.id}/`}>
+          <div class="top">
+            <span class="tile fill-c"><PracticeIcon k={p.data.key} /></span>
+            <span class="big text-c" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          </div>
+          <h3 class="h3">{p.data.title}</h3>
+          <p>{p.data.intro}</p>
+          <ul class="ticks">{p.data.services.slice(0, 3).map((s) => <li>{s.title}</li>)}</ul>
+          <span class="link-arrow text-c">Explore {p.data.title}<Arrow size={14} /></span>
+        </a>
+      ))}
+    </div>
+
+    <div class="panel reveal" style="margin-top:56px">
+      <div class="intro">
+        <p class="label-sm">Across every practice</p>
+        <p class="statement">We work like a think tank that also delivers.</p>
+        <p class="small" style="color:var(--grey-on-tint)">Each engagement starts with a question, builds the evidence to answer it and ends with a decision someone can act on.</p>
+      </div>
+      <div class="items">
+        {advisory.map((a, i) => (
+          <div class={`item rule-c ${theme(groups[i])}`}><h3>{a.title}</h3><p>{a.text}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="work" class="wrap section" aria-labelledby="work-title">
+    <div class="section-head">
+      <div>
+        <p class="label"><span class="num">02</span>Flagship engagements</p>
+        <h2 id="work-title" class="h2">Evidence that institutions adopted.</h2>
+      </div>
+      <p class="small">Delivered by our founder in prior roles and presented here as key personnel experience.</p>
+    </div>
+    <div class="ecards">
+      {work.map((w) => (
+        <article class={`ecard tinted reveal ${theme(w.data.key)}`}>
+          <div class="meta">
+            <div><span class="label-sm" style="color:var(--grey-on-tint)">Client</span><span>{w.data.client}</span></div>
+            <div><span class="label-sm" style="color:var(--grey-on-tint)">Funding</span><span>{w.data.funding}</span></div>
+            <div><span class="label-sm" style="color:var(--grey-on-tint)">Role</span><span>{w.data.role}</span></div>
+          </div>
+          <h3 class="h3" style="font-size:clamp(24px,2.4vw,30px)">{w.data.title}</h3>
+          <p style="color:var(--ink-2)">{w.data.summary}</p>
+          <div class="stats">
+            {w.data.stats.map((s) => (
+              <div><p class="stat" data-count={s.value} data-prefix={s.prefix} data-suffix={s.suffix} data-decimals={s.decimals}>{s.prefix}{fmt(s.value, s.decimals)}{s.suffix}</p><p>{s.label}</p></div>
+            ))}
+          </div>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px">
+            <p class="badge"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="2" /><path d="M7.5 12.5l3 3 6-6.5" stroke="#fff" stroke-width="2" /></svg>{w.data.result}</p>
+            <a class="link-arrow text-c" href={`/work/${w.id}/`}>Read the case study<Arrow size={14} /></a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="wrap section" aria-labelledby="record-title">
+    <div class="section-head">
+      <div>
+        <p class="label"><span class="num">03</span>Track record and partners</p>
+        <h2 id="record-title" class="h2">Two decades inside donor and national programmes.</h2>
+      </div>
+      <p><a class="link-arrow" href="/work/#experience">See the full experience record<Arrow size={14} /></a></p>
+    </div>
+    <div class="track" role="region" aria-label="Programmes delivered with">
+      <div class="marquee">{dbl(clientsA).map((x) => <span aria-hidden={x.hid ? 'true' : undefined} style={`--c:${x.c}`}>{x.t}</span>)}</div>
+      <div class="sep" aria-hidden="true"></div>
+      <div class="marquee rev">{dbl(clientsB).map((x) => <span aria-hidden={x.hid ? 'true' : undefined} style={`--c:${x.c}`}>{x.t}</span>)}</div>
+    </div>
+    <p class="xsmall muted" style="margin-top:16px">Key personnel experience of the founder, delivered in prior roles.</p>
+
+    <div class="split" style="margin-top:72px">
+      <div class="side" style="display:flex;flex-direction:column;gap:12px">
+        <p class="label-sm">Technology partners</p>
+        <p class="statement">Two established firms behind every technology engagement.</p>
+        <p class="small muted">Each partner's projects and references are its own. They are named so evaluators know who joins a Transnetrix bid, and in what role.</p>
+      </div>
+      <div class="main" style="display:flex;flex-wrap:wrap;gap:24px">
+        {partners.map((p) => (
+          <div class={`partner tinted reveal ${theme(p.key)}`}>
+            <span class="label-sm text-c">{p.label}</span>
+            <h3 style="font-size:22px;font-weight:800;letter-spacing:-0.02em;line-height:1.15">{p.name}</h3>
+            <p class="small" style="color:var(--ink-2)">{p.text}</p>
+            <p class="xsmall" style="color:var(--grey-on-tint)">{p.brings.join(' · ')}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section" aria-labelledby="about-title">
+    <div class="section-head">
+      <div>
+        <p class="label"><span class="num">04</span>Leadership</p>
+        <h2 id="about-title" class="h2">Rooted in Gilgit Baltistan. Fluent in national systems.</h2>
+      </div>
+      <p><a class="link-arrow" href="/about/">More about Transnetrix<Arrow size={14} /></a></p>
+    </div>
+    <div class="founder">
+      <div class="portrait"><img src="/images/founder.jpg" alt="Abid Majeed Khawar, Founder and Chief Executive of Transnetrix" width="600" height="750" loading="lazy" /></div>
+      <div style="flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:14px">
+        <span class="label-sm" style="color:var(--red-text)">Founder</span>
+        <h3 style="font-size:32px;font-weight:800;letter-spacing:-0.03em;line-height:1.1">Abid Majeed Khawar</h3>
+        <p style="font-weight:700">Chief Executive</p>
+        <p class="small muted">MS Business Analytics · M.Sc. Anthropology · B.A. Economics</p>
+        <p style="color:var(--ink-2);line-height:1.65">Nearly two decades in communication for development, programme delivery and institutional analytics with Save the Children, USAID funded programmes, the EU, KfW, IFAD and AKDN. He leads strategy, client relationships and quality, and serves as Head of Business Development at AIDCO (Private) Limited.</p>
+        <div class="tags">
+          <span class="t-marcom">C4D</span><span class="t-fintech">Analytics</span><span class="t-it">Policy and planning</span><span class="t-edtech">Education technology</span><span>Programme management</span>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:64px">
+      <p class="label-sm" style="margin-bottom:20px">How we work</p>
+      <div class="values">
+        {values.map((v, i) => <div class={`reveal ${theme(groups[i % 4])}`}><p class="t">{v.title}</p><p>{v.text}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <ContactBand />
+</Base>
+
+<script>
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const chart = document.querySelector<HTMLElement>('[data-chart]');
+  const words = Array.from(document.querySelectorAll<HTMLElement>('[data-words] span'));
+  const colors = ['#EC3013', '#0D7268', '#3B3A8F', '#9A5B12'];
+  const textColors = ['#B82510', '#0A594F', '#2E2D6F', '#784710'];
+  const setWord = (w: number) => words.forEach((el, i) => {
+    el.style.color = i === w ? textColors[i] : '';
+    el.style.borderBottomColor = i === w ? colors[i] : 'transparent';
+  });
+  setWord(0);
+
+  if (chart && !reduce) {
+    const bars = Array.from(chart.querySelectorAll<HTMLElement>(".cbar"));
+    const base = bars.map((b) => Number(b.dataset.h));
+    bars.forEach((b) => (b.style.height = '0%'));
+    requestAnimationFrame(() => requestAnimationFrame(() => bars.forEach((b, i) => (b.style.height = base[i] + '%'))));
+    const peaks = [5, 13, 21, 29, 2, 10, 18, 26];
+    let tick = 0;
+    setInterval(() => {
+      tick++;
+      const active = peaks[tick % peaks.length];
+      bars.forEach((b, i) => {
+        let v = Math.max(10, Math.min(100, base[i] + Math.sin(tick * 0.9 + i * 0.65) * 9));
+        if (i === active) v = Math.max(v, 92);
+        b.style.transitionDelay = i * 14 + 'ms';
+        b.style.height = v.toFixed(1) + '%';
+        b.classList.toggle('on', i === active);
+      });
+      setWord(tick % 4);
+    }, 2400);
+  }
+</script>

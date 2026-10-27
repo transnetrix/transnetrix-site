@@ -1,0 +1,72 @@
+---
+import Base from '../../layouts/Base.astro';
+import Arrow from '../../components/Arrow.astro';
+import ContactBand from '../../components/ContactBand.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const all = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+  return all.map((w, i) => ({ params: { slug: w.id }, props: { entry: w, next: all[(i + 1) % all.length] } }));
+}
+const { entry, next } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+const fmt = (v: number, n: number) => v.toLocaleString('en-US', { minimumFractionDigits: n, maximumFractionDigits: n });
+---
+<Base title={d.title} description={d.summary} >
+  <div class={`t-${d.key}`}>
+    <section class="wrap page-hero">
+      <div class="copy">
+        <p class="crumbs"><a href="/">Home</a> / <a href="/work/">Work</a> / Case study</p>
+        <p class="label text-c in">Flagship engagement</p>
+        <h1 class="display in d1" style="font-size:clamp(34px,4vw,54px)">{d.title}</h1>
+        <p class="lead in d2">{d.summary}</p>
+        <p class="badge in d3"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="2" /><path d="M7.5 12.5l3 3 6-6.5" stroke="#fff" stroke-width="2" /></svg>{d.result}</p>
+      </div>
+      <div class="art in d2"><img src={d.image} alt={d.imageAlt} /></div>
+    </section>
+
+    <section class="wrap">
+      <div class="tinted" style="border-top:4px solid var(--c);padding:clamp(24px,3vw,40px)">
+        <div class="meta" style="gap:16px 48px">
+          <div><span class="label-sm" style="color:var(--grey-on-tint)">Client</span><span>{d.client}</span></div>
+          {d.partner && <div><span class="label-sm" style="color:var(--grey-on-tint)">Counterpart</span><span>{d.partner}</span></div>}
+          <div><span class="label-sm" style="color:var(--grey-on-tint)">Funding</span><span>{d.funding}</span></div>
+          <div><span class="label-sm" style="color:var(--grey-on-tint)">Role</span><span>{d.role}</span></div>
+        </div>
+        <div class="stats" style="margin-top:24px">
+          {d.stats.map((s) => (
+            <div><p class="stat" data-count={s.value} data-prefix={s.prefix} data-suffix={s.suffix} data-decimals={s.decimals}>{s.prefix}{fmt(s.value, s.decimals)}{s.suffix}</p><p>{s.label}</p></div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap section">
+      <div class="split">
+        <div class="main">
+          <p class="label" style="margin-bottom:20px"><span class="num">01</span>{d.outcomesTitle}</p>
+          <ol class="outcomes reveal" style="padding:0;list-style:none">
+            {d.outcomes.map((o) => <li><div><h3>{o.title}</h3><p>{o.text}</p></div></li>)}
+          </ol>
+          <div class="prose" style="margin-top:32px"><Content /></div>
+        </div>
+        <aside class="side">
+          <p class="label" style="margin-bottom:20px"><span class="num">02</span>Evidence base</p>
+          <div class="kv reveal">
+            {d.facts.map((f) => <div style="flex-direction:column;gap:4px"><span class="label-sm text-c">{f.label}</span><span style="text-align:left;font-weight:500;color:var(--ink)">{f.text}</span></div>)}
+          </div>
+        </aside>
+      </div>
+      <p class="xsmall muted" style="margin-top:40px">Delivered by our founder in a prior role and presented as key personnel experience.</p>
+    </section>
+
+    <section class="wrap section">
+      <a class={`pcard tinted t-${next.data.key}`} href={`/work/${next.id}/`} style="flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:wrap">
+        <span><span class="label-sm">Next case study</span><br /><span class="h3">{next.data.title}</span></span>
+        <span class="link-arrow text-c">Read it<Arrow size={14} /></span>
+      </a>
+    </section>
+  </div>
+  <ContactBand />
+</Base>

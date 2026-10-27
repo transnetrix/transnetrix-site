@@ -1,0 +1,65 @@
+---
+import Base from '../../layouts/Base.astro';
+import Arrow from '../../components/Arrow.astro';
+import ContactBand from '../../components/ContactBand.astro';
+import { getCollection } from 'astro:content';
+import { experience } from '../../data/company';
+
+const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+const fmt = (v: number, d: number) => v.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+---
+<Base title="Work" description="Flagship engagements and the key personnel experience behind Transnetrix, across IFAD, KfW, the EU, AKDN, USAID and national programmes.">
+  <section class="wrap page-hero">
+    <div class="copy">
+      <p class="crumbs"><a href="/">Home</a> / Work</p>
+      <h1 class="display in">Evidence that institutions adopted.</h1>
+      <p class="lead in d1">Two flagship engagements and the wider record behind them. All were delivered by our founder in prior roles and are presented as key personnel experience.</p>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="ecards">
+      {work.map((w) => (
+        <a class={`ecard tinted reveal t-${w.data.key}`} href={`/work/${w.id}/`} style="text-decoration:none;color:var(--ink)">
+          <div class="meta">
+            <div><span class="label-sm" style="color:var(--grey-on-tint)">Client</span><span>{w.data.client}</span></div>
+            <div><span class="label-sm" style="color:var(--grey-on-tint)">Role</span><span>{w.data.role}</span></div>
+          </div>
+          <h2 class="h3" style="font-size:clamp(24px,2.4vw,30px)">{w.data.title}</h2>
+          <p style="color:var(--ink-2)">{w.data.summary}</p>
+          <div class="stats">
+            {w.data.stats.slice(0, 2).map((s) => (
+              <div><p class="stat" data-count={s.value} data-prefix={s.prefix} data-suffix={s.suffix} data-decimals={s.decimals}>{s.prefix}{fmt(s.value, s.decimals)}{s.suffix}</p><p>{s.label}</p></div>
+            ))}
+          </div>
+          <span class="link-arrow text-c">Read the case study<Arrow size={14} /></span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section id="experience" class="wrap section">
+    <div class="section-head">
+      <div>
+        <p class="label"><span class="num">01</span>Experience</p>
+        <h2 class="h2">The wider record.</h2>
+      </div>
+      <p>Key personnel experience of the founder, delivered in prior roles. References are available on request.</p>
+    </div>
+    <div class="table-box reveal">
+      <table>
+        <thead><tr><th scope="col">#</th><th scope="col">Client and funder</th><th scope="col">Engagement</th><th scope="col">Role</th></tr></thead>
+        <tbody>
+          {experience.map((e, i) => (
+            <tr><td>{String(i + 1).padStart(2, '0')}</td><td class="client">{e.client}</td><td>{e.work}</td><td class="role">{e.role}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <div class="btn-row" style="margin-top:32px">
+      <a class="btn btn-outline" href="/docs/Transnetrix_Company_Profile.pdf">Download the company profile (PDF)<Arrow dir="down" /></a>
+    </div>
+  </section>
+
+  <ContactBand />
+</Base>

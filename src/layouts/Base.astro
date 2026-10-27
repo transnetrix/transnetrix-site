@@ -1,0 +1,147 @@
+---
+import '../styles/global.css';
+import { site, nav } from '../data/site';
+import Wordmark from '../components/Wordmark.astro';
+
+interface Props { title?: string; description?: string; image?: string }
+const { title, description = site.description, image = '/og.png' } = Astro.props;
+const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · Consultancy and solutions, Gilgit Baltistan`;
+const canonical = new URL(Astro.url.pathname, site.url).toString();
+const ogImage = new URL(image, site.url).toString();
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+
+const org = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.legalName,
+  alternateName: site.name,
+  url: site.url,
+  logo: new URL('/favicon.svg', site.url).toString(),
+  email: site.email,
+  telephone: site.phones[0],
+  address: { '@type': 'PostalAddress', streetAddress: 'Office No. 3, Hakeem Market, Near Avari Express, Jutial', addressLocality: 'Gilgit', addressRegion: 'Gilgit Baltistan', addressCountry: 'PK' },
+  sameAs: site.social.map((s) => s.href),
+};
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta name="theme-color" content="#F3F2F2" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content={site.name} />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <script type="application/ld+json" set:html={JSON.stringify(org)} />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap bar">
+      <Wordmark href="/" />
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">MENU</button>
+      <nav id="site-nav" class="nav" aria-label="Main">
+        {nav.map((n) => (
+          <a href={n.href} class={n.accent ? 'accent' : undefined} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a>
+        ))}
+      </nav>
+    </div>
+    <div class="stripe" aria-hidden="true">
+      <span style="background:var(--marcom)"></span><span style="background:var(--edtech)"></span><span style="background:var(--fintech)"></span><span style="background:var(--it)"></span>
+    </div>
+  </header>
+
+  <main id="main">
+    <slot />
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap top">
+      <div class="brand">
+        <Wordmark href="/" />
+        <p class="small">{site.tagline}</p>
+      </div>
+      <nav aria-label="Practices">
+        <span class="label-sm" style="padding-bottom:6px">Practices</span>
+        <a href="/practices/marcom/"><i class="sq" style="background:var(--marcom)"></i>Marcom</a>
+        <a href="/practices/edtech/"><i class="sq" style="background:var(--edtech)"></i>EdTech</a>
+        <a href="/practices/fintech/"><i class="sq" style="background:var(--fintech)"></i>FinTech</a>
+        <a href="/practices/it-solutions/"><i class="sq" style="background:var(--it)"></i>IT Solutions</a>
+      </nav>
+      <nav aria-label="Company">
+        <span class="label-sm" style="padding-bottom:6px">Company</span>
+        <a href="/about/">About</a>
+        <a href="/work/">Work</a>
+        <a href="/about/#registrations">Registrations</a>
+        <a href="/docs/Transnetrix_Company_Profile.pdf">Company profile (PDF)</a>
+        <a href="/contact/">Contact</a>
+      </nav>
+      <nav aria-label="Social">
+        <span class="label-sm" style="padding-bottom:6px">@transnetrix</span>
+        {site.social.map((s) => <a href={s.href} rel="noopener" target="_blank">{s.label}</a>)}
+      </nav>
+      <div class="seal" aria-label="Transnetrix (SMC-Private) Limited official seal">
+        <Wordmark label={false} />
+        <span class="r" aria-hidden="true"></span>
+        <small>(SMC-PRIVATE)<br />LIMITED</small>
+        <small class="muted" style="letter-spacing:.22em">OFFICIAL SEAL</small>
+      </div>
+    </div>
+    <div class="wrap bottom">
+      <span>© {new Date().getFullYear()} {site.legalName} · Incorporated in Pakistan</span>
+      <span>SECP CUIN {site.secp} · FBR NTN {site.ntn}</span>
+    </div>
+  </footer>
+
+  <script>
+    const btn = document.querySelector<HTMLButtonElement>('.menu-btn');
+    const navEl = document.getElementById('site-nav');
+    btn?.addEventListener('click', () => {
+      const open = navEl?.classList.toggle('open') ?? false;
+      btn.setAttribute('aria-expanded', String(open));
+      btn.textContent = open ? 'CLOSE' : 'MENU';
+    });
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Count up numbers when they scroll into view
+    const counters = document.querySelectorAll<HTMLElement>('[data-count]');
+    const fmt = (v: number, d: number) => v.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+    const show = (el: HTMLElement, p: number) => {
+      const target = Number(el.dataset.count);
+      const d = Number(el.dataset.decimals || 0);
+      el.textContent = `${el.dataset.prefix || ''}${fmt(target * p, d)}${el.dataset.suffix || ''}`;
+    };
+    if (!reduce && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          io.unobserve(e.target);
+          const el = e.target as HTMLElement;
+          let start: number | null = null;
+          const step = (ts: number) => {
+            if (start === null) start = ts;
+            const k = Math.min(1, (ts - start) / 1600);
+            show(el, 1 - Math.pow(1 - k, 3));
+            if (k < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        });
+      }, { threshold: 0.3 });
+      counters.forEach((el) => { show(el, 0); io.observe(el); });
+    }
+  </script>
+</body>
+</html>

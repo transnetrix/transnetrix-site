@@ -1,0 +1,9 @@
+---
+interface Props { size?: number; dir?: 'right' | 'down' }
+const { size = 16, dir = 'right' } = Astro.props;
+---
+<svg width={size} height={size} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+  {dir === 'right'
+    ? <path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" />
+    : <path d="M8 2v11M4 9l4 4 4-4" stroke="currentColor" stroke-width="2" />}
+</svg>
