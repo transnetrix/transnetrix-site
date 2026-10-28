@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { site, nav } from '../data/site';
 import Wordmark from '../components/Wordmark.astro';
+import SocialIcons from '../components/SocialIcons.astro';
 
 interface Props { title?: string; description?: string; image?: string }
 const { title, description = site.description, image = '/og.png' } = Astro.props;
@@ -88,9 +89,9 @@ const org = {
         <a href="/docs/Transnetrix_Company_Profile.pdf">Company profile (PDF)</a>
         <a href="/contact/">Contact</a>
       </nav>
-      <nav aria-label="Social">
-        <span class="label-sm" style="padding-bottom:6px">@transnetrix</span>
-        {site.social.map((s) => <a href={s.href} rel="noopener" target="_blank">{s.label}</a>)}
+      <nav aria-label="Social" style="flex:0 1 340px">
+        <span class="label-sm" style="padding-bottom:10px">Follow @transnetrix</span>
+        <SocialIcons />
       </nav>
       <div class="seal" aria-label="Transnetrix (SMC-Private) Limited official seal">
         <Wordmark label={false} />
