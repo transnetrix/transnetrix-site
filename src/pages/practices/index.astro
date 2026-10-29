@@ -4,52 +4,35 @@ import Arrow from '../../components/Arrow.astro';
 import PracticeIcon from '../../components/PracticeIcon.astro';
 import ContactBand from '../../components/ContactBand.astro';
 import { getCollection } from 'astro:content';
-import { advisory } from '../../data/company';
 
 const practices = (await getCollection('practices')).sort((a, b) => a.data.order - b.data.order);
-const groups = ['marcom', 'edtech', 'fintech', 'it'];
 ---
 <Base title="Practices" description="Marcom, EdTech, FinTech and IT Solutions, held together by policy, research, programme management and capacity building.">
   <section class="wrap page-hero">
     <div class="copy">
       <p class="crumbs"><a href="/">Home</a> / Practices</p>
-      <h1 class="display in">Four practices, with the advisory capabilities that hold them together.</h1>
+      <h1 class="display in">Four practices, and the advisory core that holds them together.</h1>
       <p class="lead in d1">Engagements can address a single requirement or an integrated institutional programme. One accountable lead carries it from question to delivery.</p>
     </div>
   </section>
 
   <section class="wrap">
     {practices.map((p, i) => (
-      <a class={`pcard tinted reveal t-${p.data.key}`} href={`/practices/${p.id}/`} style="flex-direction:row;flex-wrap:wrap;gap:24px 48px;margin-bottom:24px;padding:clamp(24px,3vw,40px)">
-        <div style="flex:0 0 auto;display:flex;flex-direction:column;gap:16px">
+      <a class={`pcard tinted reveal t-${p.data.key}`} href={`/practices/${p.id}/`} style="margin-bottom:24px;padding:clamp(24px,3vw,40px)" data-prow>
+        <div class="prow-num">
           <span class="tile fill-c"><PracticeIcon k={p.data.key} /></span>
           <span class="big text-c" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
         </div>
-        <div style="flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:12px">
+        <div class="prow-text">
           <p class="label-sm text-c">{p.data.short}</p>
           <h2 class="h2" style="font-size:clamp(28px,3vw,40px)">{p.data.title}</h2>
           <p style="font-size:17px;color:var(--ink-2)">{p.data.headline}</p>
           <span class="link-arrow text-c">Explore {p.data.title}<Arrow size={14} /></span>
         </div>
-        <ul class="ticks" style="flex:1 1 300px;min-width:0">{p.data.services.map((s) => <li>{s.title}</li>)}</ul>
+        <ul class="ticks prow-list">{p.data.services.map((s) => <li>{s.title}</li>)}</ul>
+        <div class="prow-art"><img src={p.data.image} alt={p.data.imageAlt} loading="lazy" /></div>
       </a>
     ))}
-  </section>
-
-  <section class="wrap section">
-    <div class="section-head">
-      <div>
-        <p class="label"><span class="num">+</span>Across every practice</p>
-        <h2 class="h2">We work like a think tank that also delivers.</h2>
-      </div>
-      <p>Each engagement starts with a question, builds the evidence to answer it and ends with a decision someone can act on.</p>
-    </div>
-    <div class="services">
-      {advisory.map((a, i) => (
-        <div class={`service reveal t-${groups[i]}`}><span class="n">{String(i + 1).padStart(2, '0')}</span><h3>{a.title}</h3><p>{a.text}</p></div>
-      ))}
-    </div>
-    <p class="callout reveal" style="margin-top:32px"><span><strong>Research agenda:</strong> mountain infrastructure and climate risk, social protection and health financing, inclusive enterprise and tourism, and information integrity.</span></p>
   </section>
 
   <ContactBand />

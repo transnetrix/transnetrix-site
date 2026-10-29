@@ -1,0 +1,182 @@
+---
+import Base from '../layouts/Base.astro';
+import Arrow from '../components/Arrow.astro';
+
+// Content drawn from the family's doc "Abdul Hameed Khawar". Edit the text here.
+const chapters = [
+  ['life', 'His life'],
+  ['service', 'Public service'],
+  ['historian', 'The historian'],
+  ['book', 'The book'],
+  ['genealogy', 'Genealogy'],
+  ['roots', 'Roots and company'],
+  ['land', 'Land and water'],
+  ['continues', 'The work continues'],
+  ['timeline', 'Life at a glance'],
+];
+const timeline = [
+  ['18th c.', 'Ancestor Wazir Bethaam serves Raja Sulaiman Shah Khushwaqt in Gilgit'],
+  ['1913', 'Born on 5 January'],
+  ['1973', 'Posted Assistant Inspector General of Police, Gilgit Baltistan'],
+  ['1974', 'Retires from the police; Colonel Mir Wali succeeds him'],
+  ['1975', 'Elected to the Northern Areas Consultative Council'],
+  ['1938', 'His son Abdul Waheed is born on 17 July'],
+  ['1986', 'Dies on 1 November'],
+  ['2009', 'Tarikh e Aqwam e Dardistan o Balawaristan published in two volumes and launched in Gilgit by Halqa e Arbab e Zauq'],
+  ['2018', 'Foreword written for the second volume, Tarikh e Mughlan e Dardistan, drawn from his papers'],
+  ['2024', 'Abdul Waheed dies on 19 February'],
+];
+---
+<Base title="Legacy: Abdul Hameed Khawar" description="Abdul Hameed Khawar (1913 to 1986), historian of Gilgit Baltistan, police officer and elected councillor, and the posthumous publication of his work by his son Abdul Waheed." image="/images/heritage/portrait.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@500&display=swap" rel="stylesheet" />
+
+  <section class="her-hero">
+    <div class="wrap inner">
+      <img class="in" src="/images/heritage/portrait.jpg" alt="Portrait of Abdul Hameed Khawar" width="1173" height="1200" />
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <p class="crumbs in"><a href="/">Home</a> / Legacy</p>
+        <p class="label in" style="color:#ADA9A6">Legacy · A life spent on the record</p>
+        <h1 class="display in d1">Abdul Hameed Khawar</h1>
+        <p class="years in d1">1913 to 1986</p>
+        <p class="lead in d2">He spent his life writing down what Gilgit Baltistan had mostly kept in memory: who its peoples are, how their lineages run, and how the region's past fits together.</p>
+        <p class="urdu in d3" lang="ur">تاریخِ اقوامِ دردستان و بلورستان</p>
+      </div>
+    </div>
+  </section>
+
+  <nav class="her-nav" aria-label="Chapters">
+    <div class="wrap"><ul>{chapters.map(([id, t]) => <li><a href={`#${id}`}>{t}</a></li>)}</ul></div>
+  </nav>
+
+  <div class="wrap section-last">
+    <section id="life" class="chapter">
+      <p class="num">01 · His life</p>
+      <div class="text">
+        <h2 class="h2">Officer, councillor and historian.</h2>
+        <p>He served the region as a police officer in the founding years of its force and as an elected member of the Northern Areas Consultative Council. On the land, he turned barren ground into fields, one irrigation channel at a time.</p>
+        <p>His lasting work is <em>Tarikh e Aqwam e Dardistan o Balawaristan</em>, a two volume history of the peoples of the region, published after his death.</p>
+      </div>
+    </section>
+
+    <section id="service" class="chapter">
+      <p class="num">02 · Public service</p>
+      <div class="text">
+        <h2 class="h2">A police service still being built.</h2>
+        <p>In 1973 he was posted Assistant Inspector General of Police in Gilgit Baltistan, a year after the post was first filled, and he retired from the police in 1974. The central police office then ran from a rented house in Gilgit, and the Deputy Commissioner held an Inspector General's powers until 1975 (<a href="https://gbp.gov.pk/?p=503" rel="noopener" target="_blank">GB Police history</a>).</p>
+        <p>The whole force numbered about 218 in 1975. On his retirement, Colonel Mir Wali of Ghizer succeeded him as AIG.</p>
+        <p>In 1975 he was elected to the Northern Areas Consultative Council, carrying the same knowledge of the region into its early elected politics.</p>
+      </div>
+    </section>
+
+    <section id="historian" class="chapter">
+      <p class="num">03 · The historian</p>
+      <div class="text">
+        <h2 class="h2">History tested against evidence.</h2>
+        <p>Khawar was a contemporary and companion of the archaeologist Ahmad Hasan Dani and the German scholar Karl Jettmar, the two names most tied to the study of the region's past. His own research spread across history, genealogy, anthropology, linguistics, poetry and prose.</p>
+        <p>Over decades he gathered documents and manuscripts and kept them in drafts written at different stages of his life. His method went beyond chronicle: he tested history against evidence, traced the region's linguistic past, and read its scattered ruins for what they said about earlier ages.</p>
+      </div>
+    </section>
+
+    <section id="book" class="chapter">
+      <p class="num">04 · The book</p>
+      <div class="text">
+        <h2 class="h2">Published by his son, after his death.</h2>
+        <p>His son Abdul Waheed compiled and edited these papers and saw it as a duty to publish them. The book appeared in 2009 in two parts: <em>Tarikh e Rajgan e Gilgit</em>, six chapters on the ruling houses of Gilgit, the Trakhan dynasty, Hunza, Nagar, Yasin and Chitral, and <em>Tehzeeb o Tamaddun e Dardistan</em>, on the region's culture and tribes.</p>
+        <div class="book reveal">
+          <img src="/images/heritage/book-cover.jpg" alt="Front cover of Tarikh e Aqwam e Dardistan o Balawaristan" loading="lazy" />
+          <div class="facts">
+            <div><span>Title</span><span><span class="urdu" lang="ur" style="font-size:20px;line-height:1.9">تاریخِ اقوامِ دردستان و بلورستان</span><br /><em>Tarikh e Aqwam e Dardistan o Balawaristan</em></span></div>
+            <div><span>Subject</span><span>The peoples and history of Dardistan and Balawaristan, the old names for today's Gilgit Baltistan</span></div>
+            <div><span>Extent</span><span>Two volumes, 750 pages</span></div>
+            <div><span>Published</span><span>2009, Abdul Wahid and Brothers (<a href="https://books.google.com/books/about/%D8%AA%D8%A7%D8%B1%D9%8A%D8%AE_%D8%A7%D9%82%D9%88%D8%A7%D9%85_%D8%AF%D8%B1%D8%AF%D8%B3%D8%AA%D8%A7%D9%86_%D9%88.html?id=3c5dtwAACAAJ" rel="noopener" target="_blank">Google Books</a>)</span></div>
+            <div><span>ISBN</span><span>978 969 9383 00 7</span></div>
+            <div><span>Compiled and edited</span><span>Abdul Waheed, his son</span></div>
+            <div><span>Launched by</span><span>Halqa e Arbab e Zauq, Gilgit</span></div>
+            <div style="border-bottom:1px solid var(--rule)"><span>Idea conceived by</span><span>Abid Majeed Khawar, his grandson</span></div>
+          </div>
+        </div>
+        <figure class="figure reveal">
+          <img src="/images/heritage/launch-2009.jpg" alt="Launch of the book in Gilgit, 2009" loading="lazy" />
+          <figcaption>The launch ceremony in Gilgit, hosted by Halqa e Arbab e Zauq, the town's literary circle.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="genealogy" class="chapter">
+      <p class="num">05 · Genealogy and culture</p>
+      <div class="text">
+        <h2 class="h2">Descent set down in writing.</h2>
+        <p>The book's purpose was twofold: to reconnect the broken chain of the region's history, and to trace the lineage of the tribes settled across it. In a region where family descent was carried in memory and in the words of elders, he set it down in writing.</p>
+        <p>Nine drawn family trees (shajra e nasab) trace the ruling houses, among them the Khushwaqt line of Yasin and the royal families of Hunza and Nagar. Illustrated pages give the tribes of Gilgit and its valleys their own place, including the Poray, Mannay, Dadmay, Joway, Phokay, Maddiyey, Malway, Buddiaey and the Machchokay of Rattu.</p>
+        <figure class="figure reveal" style="max-width:520px">
+          <img src="/images/heritage/family-tree-khushwaqt.jpg" alt="Family tree of the Khushwaqt house" loading="lazy" />
+          <figcaption>Shajra e nasab of the Khushwaqt house, descended from Shah Khushwaqt, one of the nine family trees in the book.</figcaption>
+        </figure>
+        <p>For families across Gilgit Baltistan, it remains a place to find their own names in the region's story.</p>
+      </div>
+    </section>
+
+    <section id="roots" class="chapter">
+      <p class="num">06 · Roots and company</p>
+      <div class="text">
+        <h2 class="h2">Family memory and long friendships.</h2>
+        <p>An ancestor, Wazir Bethaam, served as minister of finance and tutor to the heir when Raja Sulaiman Shah of the Khushwaqt house took Gilgit in the eighteenth century; a stipend granted to the family for that service ran on past 1947.</p>
+        <p>Khawar drew his taste for writing history from long friendships with the first Raja of Punial, Muhammad Anwar Khan, and later with the Mehtar of Chitral, Nasir ul Mulk. His ties with the Mehtar's court lasted until his death.</p>
+        <div class="fig-row">
+          <figure class="figure reveal">
+            <img src="/images/heritage/three-friends.jpg" alt="Three friends" loading="lazy" />
+            <figcaption>"Three friends": Abdul Hameed Khawar (AIG Police), Muhammad Ismail (Deputy Commissioner) and Abdul Wahid (Joint Secretary).</figcaption>
+          </figure>
+          <figure class="figure reveal">
+            <img src="/images/heritage/group-major-tufail.jpg" alt="Group photograph with Major Tufail Muhammad" loading="lazy" />
+            <figcaption>Seated third from right, Abdul Hameed Khawar; fourth, Major Tufail Muhammad, Shaheed, Nishan e Haider; at the end, Girdawar Nemat Khan.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="land" class="chapter">
+      <p class="num">07 · Land and water</p>
+      <div class="text">
+        <h2 class="h2">Barren ground, and a channel cut to reach it.</h2>
+        <p>Khawar acquired land across Gilgit Baltistan and brought it to life the only way that works in these mountains: by bringing water to it. Each estate began as barren ground and an irrigation channel cut to reach it.</p>
+        <p>The family estate at Pari Bangla, on the Karakoram Highway between Juglot and Gilgit, is one of them. Its walled fields and poplars stand on ground that was dry before his channel arrived. It is the same work as the history, done on the ground: patient, long term, and meant to outlast him.</p>
+      </div>
+    </section>
+
+    <section id="continues" class="chapter">
+      <p class="num">08 · The work continues</p>
+      <div class="text">
+        <h2 class="h2">A son's duty, and a grandson's edit.</h2>
+        <div class="person reveal">
+          <img src="/images/heritage/abdul-waheed.jpg" alt="Portrait of Abdul Waheed" loading="lazy" />
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span class="label-sm" style="color:var(--red-text)">Engineer · Compiler and editor</span>
+            <h3 style="font-size:28px;font-weight:800;letter-spacing:-0.03em">Abdul Waheed</h3>
+            <p class="years" style="font-size:15px;font-weight:700;letter-spacing:0.04em;color:var(--grey)">17 July 1938 to 19 February 2024</p>
+            <p class="small muted">Executive Engineer (XEN), Gilgit Baltistan Public Works Department, retired · Son of Abdul Hameed Khawar</p>
+            <p style="font-size:16px">Abdul Waheed was an engineer by profession and served the Gilgit Baltistan Public Works Department until his retirement as Executive Engineer. Alongside his career, he took upon himself the completion of his father's life's work. He collected the manuscripts, compiled and edited them into two volumes, and brought about their posthumous publication in Gilgit in 2009.</p>
+          </div>
+        </div>
+        <p>Seven hundred pages could not hold all the papers. Abdul Waheed went on to prepare a second volume from them, <em>Tarikh e Mughlan e Dardistan (Gilgit o Chitral)</em>, on the Khushwaqt, Burush and Kator dynasties descended from Mirza Ayub; its foreword is dated Islamabad, July 2018.</p>
+        <p>He also drafted <em>Where the Mountains Meet</em>, the story of Raja Gohar Aman, who fought the Sikh and Dogra advance in the years the Great Game was taking shape. In the foreword, Abdul Waheed credits his son Abid Majeed Khawar as the editor of both books.</p>
+        <figure class="figure reveal" style="max-width:460px">
+          <img src="/images/heritage/with-sons.jpg" alt="Abdul Hameed Khawar with his sons" loading="lazy" />
+          <figcaption>Abdul Hameed Khawar with his sons.</figcaption>
+        </figure>
+        <p>The research behind the first book, its family trees and its photographs remain in the family's archive, with the second volume at first proof.</p>
+      </div>
+    </section>
+
+    <section id="timeline" class="chapter">
+      <p class="num">09 · Life at a glance</p>
+      <div class="text">
+        <h2 class="h2">His life in dates.</h2>
+        <ol class="tl reveal">{timeline.map(([y, e]) => <li><b>{y}</b><span>{e}</span></li>)}</ol>
+        <p class="xsmall muted" style="margin-top:24px">Sources: <a href="https://gbp.gov.pk/?p=503" rel="noopener" target="_blank">History of GB Police</a>, Gilgit Baltistan Police; the book's <a href="https://books.google.com/books/about/%D8%AA%D8%A7%D8%B1%D9%8A%D8%AE_%D8%A7%D9%82%D9%88%D8%A7%D9%85_%D8%AF%D8%B1%D8%AF%D8%B3%D8%AA%D8%A7%D9%86_%D9%88.html?id=3c5dtwAACAAJ" rel="noopener" target="_blank">Google Books record</a>; the 2009 print files, the 2018 first proof foreword and photographs in the family archive.</p>
+        <div class="btn-row" style="margin-top:8px"><a class="btn btn-outline" href="/contact/">Ask about the archive<Arrow /></a></div>
+      </div>
+    </section>
+  </div>
+</Base>

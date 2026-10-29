@@ -1,0 +1,75 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostCard from '../../components/PostCard.astro';
+import ContactBand from '../../components/ContactBand.astro';
+import { getPosts } from '../../lib/articles';
+
+const posts = await getPosts();
+const counts = { all: posts.length, article: posts.filter((p) => p.data.type === 'article').length, news: posts.filter((p) => p.data.type === 'news').length };
+const filters = [
+  { key: 'all', label: 'All', href: '/articles/' },
+  { key: 'article', label: 'Articles', href: '/articles/?type=article' },
+  { key: 'news', label: 'News', href: '/articles/?type=news' },
+] as const;
+---
+<Base title="Articles and News" description="Articles by Abid Majeed Khawar and news from Transnetrix on communication for development, education, financial inclusion and technology in Gilgit Baltistan and Pakistan.">
+  <section class="wrap page-hero">
+    <div class="copy">
+      <p class="crumbs"><a href="/">Home</a> / Articles and News</p>
+      <h1 class="display in">Articles and News</h1>
+      <p class="lead in d1">Writing on communication, evidence and delivery from the people who do the work, and updates from Transnetrix.</p>
+      <p class="small in d2"><a href="/articles/rss.xml">Follow by RSS</a> · <a href="https://www.linkedin.com/company/144590029/" rel="noopener" target="_blank">Follow on LinkedIn</a></p>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <nav class="chips" aria-label="Filter posts" data-chips>
+      {filters.map((f) => (
+        <a href={f.href} data-filter={f.key} aria-current={f.key === 'all' ? 'true' : undefined}>{f.label}<span>{counts[f.key]}</span></a>
+      ))}
+    </nav>
+
+    <div class="post-grid" data-posts>
+      {posts.map((p, i) => <PostCard post={p} featured={i === 0} />)}
+    </div>
+
+    <div class="post-empty" data-empty="article" hidden={counts.article > 0}>
+      <p class="label-sm">Articles</p>
+      <h2 class="h3">The first article is on its way.</h2>
+      <p>Abid Majeed Khawar's writing on communication for development, data and delivery will appear here. Follow Transnetrix on LinkedIn to see it first.</p>
+    </div>
+    <div class="post-empty" data-empty="news" hidden>
+      <p class="label-sm">News</p>
+      <h2 class="h3">No news yet.</h2>
+    </div>
+  </section>
+
+  <ContactBand />
+</Base>
+
+<script>
+  const chips = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-chips] a'));
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-posts] .post'));
+  const empties = Array.from(document.querySelectorAll<HTMLElement>('[data-empty]'));
+  const apply = (type: string) => {
+    let shown = 0;
+    cards.forEach((c) => {
+      const on = type === 'all' || c.dataset.type === type;
+      c.hidden = !on;
+      if (on) shown++;
+    });
+    // The first visible card takes the featured layout.
+    cards.forEach((c) => c.classList.remove('post-feature'));
+    cards.find((c) => !c.hidden)?.classList.add('post-feature');
+    chips.forEach((a) => (a.dataset.filter === type ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current')));
+    empties.forEach((e) => (e.hidden = !(type === e.dataset.empty && shown === 0)));
+  };
+  const initial = new URLSearchParams(location.search).get('type') ?? 'all';
+  apply(['article', 'news'].includes(initial) ? initial : 'all');
+  chips.forEach((a) => a.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    const t = a.dataset.filter ?? 'all';
+    history.replaceState(null, '', a.href);
+    apply(t);
+  }));
+</script>

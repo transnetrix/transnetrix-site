@@ -21,6 +21,7 @@ const fmt = (v: number, d: number) => v.toLocaleString('en-US', { minimumFractio
     <div class="ecards">
       {work.map((w) => (
         <a class={`ecard tinted reveal t-${w.data.key}`} href={`/work/${w.id}/`} style="text-decoration:none;color:var(--ink)">
+          <div class="ecard-art"><img src={w.data.image} alt={w.data.imageAlt} loading="lazy" /></div>
           <div class="meta">
             <div><span class="label-sm" style="color:var(--grey-on-tint)">Client</span><span>{w.data.client}</span></div>
             <div><span class="label-sm" style="color:var(--grey-on-tint)">Role</span><span>{w.data.role}</span></div>

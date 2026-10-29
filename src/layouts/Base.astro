@@ -1,11 +1,12 @@
 ---
 import '../styles/global.css';
-import { site, nav } from '../data/site';
+import { site } from '../data/site';
+import { nav } from '../data/nav';
 import Wordmark from '../components/Wordmark.astro';
 import SocialIcons from '../components/SocialIcons.astro';
 
-interface Props { title?: string; description?: string; image?: string }
-const { title, description = site.description, image = '/og.png' } = Astro.props;
+interface Props { title?: string; description?: string; image?: string; ogType?: 'website' | 'article'; published?: Date; author?: string }
+const { title, description = site.description, image = '/og.png', ogType = 'website', published, author } = Astro.props;
 const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · Consultancy and solutions, Gilgit Baltistan`;
 const canonical = new URL(Astro.url.pathname, site.url).toString();
 const ogImage = new URL(image, site.url).toString();
@@ -35,7 +36,10 @@ const org = {
   <link rel="canonical" href={canonical} />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <meta name="theme-color" content="#F3F2F2" />
-  <meta property="og:type" content="website" />
+  <meta property="og:type" content={ogType} />
+  {published && <meta property="article:published_time" content={published.toISOString()} />}
+  {author && <meta name="author" content={author} />}
+  <link rel="alternate" type="application/rss+xml" title="Transnetrix Articles and News" href="/articles/rss.xml" />
   <meta property="og:site_name" content={site.name} />
   <meta property="og:title" content={fullTitle} />
   <meta property="og:description" content={description} />
@@ -54,10 +58,24 @@ const org = {
       <Wordmark href="/" />
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">MENU</button>
       <nav id="site-nav" class="nav" aria-label="Main">
-        {nav.map((n) => (
-          <a href={n.href} class={n.accent ? 'accent' : undefined} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a>
-        ))}
-      </nav>
+        <ul class="nav-list">
+          {nav.map((n) => (
+            <li class={n.children ? 'has-sub' : undefined}>
+              <a href={n.href} class={n.accent ? 'accent' : undefined} aria-current={isCurrent(n.href) ? 'page' : undefined} aria-haspopup={n.children ? 'true' : undefined}>
+                {n.label}{n.children && <svg class="caret" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>}
+              </a>
+              {n.children && (
+                <div class="sub">
+                  <ul>
+                    {n.children.map((c) => (
+                      <li><a href={c.href}><strong>{c.label}</strong>{c.note && <span>{c.note}</span>}</a></li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
     </div>
     <div class="stripe" aria-hidden="true">
       <span style="background:var(--marcom)"></span><span style="background:var(--edtech)"></span><span style="background:var(--fintech)"></span><span style="background:var(--it)"></span>
@@ -80,11 +98,14 @@ const org = {
         <a href="/practices/edtech/"><i class="sq" style="background:var(--edtech)"></i>EdTech</a>
         <a href="/practices/fintech/"><i class="sq" style="background:var(--fintech)"></i>FinTech</a>
         <a href="/practices/it-solutions/"><i class="sq" style="background:var(--it)"></i>IT Solutions</a>
+        <a href="/practices/advisory/"><i class="sq" style="background:var(--ink)"></i>Advisory</a>
       </nav>
       <nav aria-label="Company">
         <span class="label-sm" style="padding-bottom:6px">Company</span>
         <a href="/about/">About</a>
         <a href="/work/">Work</a>
+        <a href="/articles/">Articles and News</a>
+        <a href="/legacy/">Legacy</a>
         <a href="/about/#registrations">Registrations</a>
         <a href="/docs/Transnetrix_Company_Profile.pdf">Company profile (PDF)</a>
         <a href="/contact/">Contact</a>

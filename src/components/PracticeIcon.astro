@@ -1,10 +1,11 @@
 ---
-interface Props { k: 'marcom' | 'edtech' | 'fintech' | 'it'; size?: number; color?: string }
+interface Props { k: 'marcom' | 'edtech' | 'fintech' | 'it' | 'advisory'; size?: number; color?: string }
 const { k, size = 30, color = '#FFFFFF' } = Astro.props;
 ---
 <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true" stroke={color} stroke-width="1.9" stroke-linejoin="round">
   {k === 'marcom' && <><path d="M5 13v6h4l10 6V7L9 13H5z" /><path d="M23 12.5c1.6 1.6 1.6 5.4 0 7" stroke-linecap="round" /></>}
   {k === 'edtech' && <><rect x="5" y="7" width="22" height="15" /><path d="M2 26h28" /><path d="M16 11.5l3 3-3 3-3-3z" /></>}
   {k === 'fintech' && <><rect x="10" y="3" width="12" height="26" /><circle cx="16" cy="12" r="3" /><path d="M14 24h4" /></>}
+  {k === 'advisory' && <><path d="M8 4h12l4 4v20H8z" /><path d="M20 4v4h4" /><path d="M12 15h8M12 19h8M12 23h5" /></>}
   {k === 'it' && <><rect x="5" y="4" width="22" height="8" /><rect x="5" y="15" width="22" height="8" /><path d="M9 8h3M9 19h3M16 23v5M10 28h12" /></>}
 </svg>

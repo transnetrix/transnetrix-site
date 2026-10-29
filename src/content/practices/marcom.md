@@ -5,8 +5,8 @@ key: marcom
 order: 1
 headline: Communication that changes behaviour and outlasts the programme.
 intro: Our Marcom starts where general marketing stops. It is communication for development, read through data, built to change behaviour and judged by the change that remains after a programme closes.
-image: /images/mountains.jpg
-imageAlt: Pencil sketch of mountain ranges with red signal lines rising from the peaks
+image: /images/marcom.svg
+imageAlt: Impact traced before, during and after a programme, around a monitoring, evaluation, accountability and learning cycle for behaviour change
 services:
   - title: Contextual marketing for behaviour change
     text: Communication for development in Urdu and regional languages, sharpened by machine learning models that read audiences and widen reach for advocacy.

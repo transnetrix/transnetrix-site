@@ -1,0 +1,20 @@
+---
+import Arrow from './Arrow.astro';
+import { formatDate, readingTime, typeLabel, type Post } from '../lib/articles';
+interface Props { post: Post; featured?: boolean }
+const { post, featured = false } = Astro.props;
+const d = post.data;
+---
+<a class={`post reveal ${featured ? 'post-feature' : ''} post-${d.type}`} href={`/articles/${post.id}/`} data-type={d.type}>
+  <div class="post-pic">
+    {d.cover
+      ? <img src={d.cover} alt={d.coverAlt ?? ''} loading="lazy" />
+      : <span class="post-mark" aria-hidden="true">{typeLabel(d.type)}</span>}
+  </div>
+  <div class="post-body">
+    <p class="post-meta"><span class="post-type">{typeLabel(d.type)}</span><span>{formatDate(d.date)}</span><span>{readingTime(post.body)} min read</span></p>
+    <h3>{d.title}</h3>
+    <p class="post-sum">{d.summary}</p>
+    <span class="link-arrow">Read {d.type === 'news' ? 'the update' : 'the article'}<Arrow size={14} /></span>
+  </div>
+</a>
